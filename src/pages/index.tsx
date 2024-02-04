@@ -4,20 +4,26 @@ import Link from "next/link";
 
 import { api } from "~/utils/api";
 
+
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  const mutation = api.quiz.create.useMutation();
+  const quiz = api.quiz.getList.useQuery();
+  
+  const handleClick = async () => {
+    console.log("hello world!")
+    // Need to make a call to my backend service to create a new quiz
+    mutation.mutate() 
+  }
 
   return (
     <>
-     <button className="btn btn-primary" onClick={onButtonClick}>Create new quiz</button> 
+     <button className="btn btn-primary" onClick={handleClick}>Create new quiz</button>
+     {quiz.data?.map((quiz) => {return <div key={quiz.id}>{quiz.title}</div>})} 
     </>
   );
 }
 
-function onButtonClick() {
-  console.log("hello world!")
-  // Need to make a call to my backend service to create a new quiz
-}
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
