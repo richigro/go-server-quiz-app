@@ -75,3 +75,33 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model Quiz {
+    id              Int    @id @default(autoincrement())
+    title           String
+    description     String
+    userId          Int
+    allowedAttempts Int
+}
+
+model Question {
+    id     Int    @id @default(autoincrement())
+    quizId Int
+    text   String
+    type   String // e.g., multiple-choice, true/false, etc.
+}
+
+model Attempt {
+    id        Int      @id @default(autoincrement())
+    quizId    Int
+    userId    Int
+    timestamp DateTime
+    score     Decimal  @db.Decimal(10, 2)
+}
+
+model Answer {
+    id         Int     @id @default(autoincrement())
+    questionId Int
+    text       String
+    isCorrect  Boolean @db.TinyInt
+}
